@@ -81,15 +81,22 @@ fn handle_command(cmd: &str, writer: Option<&mut std::os::unix::net::UnixStream>
   match cmd {
     "left" => switch_direction(Direction::Left),
     "right" => switch_direction(Direction::Right),
-    "info" if let Some(w) = writer => respond_space_info(w),
-
-    _ if let Some(("index", n)) = cmd.split_once(' ')
-      && let Ok(target) = n.parse::<u32>() =>
-    {
-      switch_to_index(target.saturating_sub(1))
+    "info" => {
+      if let Some(w) = writer {
+        respond_space_info(w);
+      }
     }
+    _ => {
+      match cmd.split_once(' ') {
+        Some(("index", n)) => {
+          if let Ok(target) = n.parse::<u32>() {
+            switch_to_index(target.saturating_sub(1));
+          }
+        }
 
-    _ => log::warn!("Unknown command: {cmd}"),
+        _ => log::warn!("Unknown command: {cmd}"),
+      }
+    }
   }
 }
 
