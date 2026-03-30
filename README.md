@@ -21,6 +21,8 @@ Or build from source:
 open target/swoosher.app
 ```
 
+If macOS says that the binary is broken, run: `sudo xattr -c /PATH/TO/DOT_APP_FILE`.
+
 ## Configuration
 
 The config file is located at `~/.config/swoosher/config.toml` and is created automatically on first launch. Changes are hot-reloaded — no restart needed.
